@@ -3,4 +3,4 @@ Application that displays, and edits pictures form a given directory. This appli
 
 Team responsibilities:
 - Rede: Editor Form
-- Nestor: Main Form (see main-form-nestor branch)
+- Nestor: Main Form (see [main-form-nestor branch](https://github.com/nestoralfaro/photo-editor/tree/main-form-nestor))
