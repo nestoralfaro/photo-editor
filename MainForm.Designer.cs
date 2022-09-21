@@ -29,27 +29,32 @@ namespace photo_editor
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
+            treeNode1});
             this.menuStripMainForm = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.locateOnDiskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectRootFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.locateOnDiskToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectRootFolderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smallToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.largeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.locateOnDiskToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectRootFolderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.treeViewMainForm = new System.Windows.Forms.TreeView();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
             this.menuStripMainForm.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMainForm
@@ -98,6 +103,40 @@ namespace photo_editor
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
+            // fileToolStripMenuItem1
+            // 
+            this.fileToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.locateOnDiskToolStripMenuItem1,
+            this.selectRootFolderToolStripMenuItem1,
+            this.toolStripMenuItem2,
+            this.exitToolStripMenuItem1});
+            this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem1.Text = "File";
+            // 
+            // locateOnDiskToolStripMenuItem1
+            // 
+            this.locateOnDiskToolStripMenuItem1.Name = "locateOnDiskToolStripMenuItem1";
+            this.locateOnDiskToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
+            this.locateOnDiskToolStripMenuItem1.Text = "Locate on Disk";
+            // 
+            // selectRootFolderToolStripMenuItem1
+            // 
+            this.selectRootFolderToolStripMenuItem1.Name = "selectRootFolderToolStripMenuItem1";
+            this.selectRootFolderToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
+            this.selectRootFolderToolStripMenuItem1.Text = "Select Root Folder...";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(175, 6);
+            // 
+            // exitToolStripMenuItem1
+            // 
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
+            this.exitToolStripMenuItem1.Text = "Exit";
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -111,19 +150,19 @@ namespace photo_editor
             // detailsToolStripMenuItem
             // 
             this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
-            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.detailsToolStripMenuItem.Text = "Details";
             // 
             // smallToolStripMenuItem
             // 
             this.smallToolStripMenuItem.Name = "smallToolStripMenuItem";
-            this.smallToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.smallToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.smallToolStripMenuItem.Text = "Small";
             // 
             // largeToolStripMenuItem
             // 
             this.largeToolStripMenuItem.Name = "largeToolStripMenuItem";
-            this.largeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.largeToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.largeToolStripMenuItem.Text = "Large";
             // 
             // helpToolStripMenuItem
@@ -140,48 +179,29 @@ namespace photo_editor
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // fileToolStripMenuItem1
-            // 
-            this.fileToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.locateOnDiskToolStripMenuItem1,
-            this.selectRootFolderToolStripMenuItem1,
-            this.toolStripMenuItem2,
-            this.exitToolStripMenuItem1});
-            this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
-            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem1.Text = "File";
-            // 
-            // locateOnDiskToolStripMenuItem1
-            // 
-            this.locateOnDiskToolStripMenuItem1.Name = "locateOnDiskToolStripMenuItem1";
-            this.locateOnDiskToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.locateOnDiskToolStripMenuItem1.Text = "Locate on Disk";
-            // 
-            // selectRootFolderToolStripMenuItem1
-            // 
-            this.selectRootFolderToolStripMenuItem1.Name = "selectRootFolderToolStripMenuItem1";
-            this.selectRootFolderToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.selectRootFolderToolStripMenuItem1.Text = "Select Root Folder...";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
-            // 
-            // exitToolStripMenuItem1
-            // 
-            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem1.Text = "Exit";
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel1.Controls.Add(this.treeViewMainForm);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 426);
             this.panel1.TabIndex = 1;
+            // 
+            // treeViewMainForm
+            // 
+            this.treeViewMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewMainForm.Location = new System.Drawing.Point(0, 0);
+            this.treeViewMainForm.Name = "treeViewMainForm";
+            treeNode1.Name = "Node1";
+            treeNode1.Text = "Node1";
+            treeNode2.Name = "Node0";
+            treeNode2.Text = "Node0";
+            this.treeViewMainForm.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode2});
+            this.treeViewMainForm.Size = new System.Drawing.Size(200, 426);
+            this.treeViewMainForm.TabIndex = 0;
             // 
             // splitter1
             // 
@@ -215,6 +235,7 @@ namespace photo_editor
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStripMainForm.ResumeLayout(false);
             this.menuStripMainForm.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -242,6 +263,7 @@ namespace photo_editor
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TreeView treeViewMainForm;
     }
 }
 
