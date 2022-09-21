@@ -53,8 +53,10 @@ namespace photo_editor
             this.treeViewMainForm = new System.Windows.Forms.TreeView();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.listViewMain = new System.Windows.Forms.ListView();
             this.menuStripMainForm.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMainForm
@@ -214,11 +216,22 @@ namespace photo_editor
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightGray;
+            this.panel2.Controls.Add(this.listViewMain);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(203, 24);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(597, 426);
             this.panel2.TabIndex = 3;
+            // 
+            // listViewMain
+            // 
+            this.listViewMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewMain.HideSelection = false;
+            this.listViewMain.Location = new System.Drawing.Point(0, 0);
+            this.listViewMain.Name = "listViewMain";
+            this.listViewMain.Size = new System.Drawing.Size(597, 426);
+            this.listViewMain.TabIndex = 0;
+            this.listViewMain.UseCompatibleStateImageBehavior = false;
             // 
             // MainForm
             // 
@@ -236,6 +249,7 @@ namespace photo_editor
             this.menuStripMainForm.ResumeLayout(false);
             this.menuStripMainForm.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,6 +278,7 @@ namespace photo_editor
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TreeView treeViewMainForm;
+        private System.Windows.Forms.ListView listViewMain;
     }
 }
 
