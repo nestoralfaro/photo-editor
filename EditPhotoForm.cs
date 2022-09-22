@@ -26,6 +26,11 @@ namespace photo_editor
             pictureBox1.Image = Image.FromFile(pic);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
