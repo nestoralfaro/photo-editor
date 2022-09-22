@@ -29,7 +29,18 @@ namespace photo_editor
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            // Citation Start: Code below from https://stackoverflow.com/questions/33024881/invert-image-faster-in-c-sharp
+            Bitmap photo = new Bitmap(pictureBox1.Image);                                       
+            for(int y = 0; (y <= (photo.Height - 1)); y++) {                                    
+                for (int x = 0; (x <= (photo.Width - 1)); x++)                                      
+                {                                                                                      
+                    Color inv = photo.GetPixel(x, y);                                           
+                    inv = Color.FromArgb(255, (255 - inv.R), (255 - inv.G), (255 - inv.B));     
+                    photo.SetPixel(x, y, inv);                                                  
+                }
+            }
+            pictureBox1.Image = photo;
+            //Citation End
         }
     }
 

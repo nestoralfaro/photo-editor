@@ -137,7 +137,7 @@ namespace photo_editor
             EditPhotoForm edit = new EditPhotoForm();
            
             edit.pic = photoRootDirectory + "\\" + send;
-            edit.Show();
+            edit.ShowDialog();
 
         }
     }
