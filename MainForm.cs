@@ -9,16 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
+using photo_editor;
+
 
 namespace photo_editor
 {
+
     public partial class MainForm : Form
     {
         private string photoRootDirectory;
         private List<FileInfo> photoFiles;
         private List<ListViewItem> photoDetails;
         private ImageList thumbnails;
-        public Photo photo;
         public MainForm()
         {
             InitializeComponent();
@@ -133,8 +135,10 @@ namespace photo_editor
             send = send.Remove(send.Length - 1, 1);
             Console.WriteLine(send);
             EditPhotoForm edit = new EditPhotoForm();
+           
+            edit.pic = photoRootDirectory + "\\" + send;
             edit.Show();
-            photo.test = "hi";
+
         }
     }
 }

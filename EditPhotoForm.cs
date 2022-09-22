@@ -12,20 +12,20 @@ namespace photo_editor
 {
     public partial class EditPhotoForm : Form
     {
+        public string pic;
         public EditPhotoForm()
         {
             InitializeComponent();
         }
 
-        private void pictureBox1_LoadCompleted(object sender, AsyncCompletedEventArgs e)
-        {
+        
 
+        private void EditPhotoForm_Load(object sender, EventArgs e)
+        {
+            Console.WriteLine(pic);
+            pictureBox1.Image = Image.FromFile(pic);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
     }
 
-    public class Photo
-    {
-
-        public string test;
-    }
 }

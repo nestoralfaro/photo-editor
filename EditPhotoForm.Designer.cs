@@ -37,7 +37,7 @@
             // Save
             // 
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Save.Location = new System.Drawing.Point(569, 383);
+            this.Save.Location = new System.Drawing.Point(396, 425);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(75, 23);
             this.Save.TabIndex = 0;
@@ -47,7 +47,7 @@
             // Cancel
             // 
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(694, 382);
+            this.Cancel.Location = new System.Drawing.Point(502, 425);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 1;
@@ -56,23 +56,23 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(80, 22);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(776, 349);
+            this.pictureBox1.Size = new System.Drawing.Size(481, 362);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.pictureBox1_LoadCompleted);
             // 
             // EditPhotoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(608, 465);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.Save);
             this.Name = "EditPhotoForm";
             this.Text = "EditPhotoForm";
+            this.Load += new System.EventHandler(this.EditPhotoForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
