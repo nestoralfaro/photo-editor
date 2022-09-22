@@ -90,6 +90,7 @@ namespace photo_editor
             Stack<TreeNode> stack = new Stack<TreeNode>();
             DirectoryInfo rootDirectory = new DirectoryInfo(photoRootDirectory);
             TreeNode node = new TreeNode(rootDirectory.Name) { Tag = rootDirectory };
+            node.ExpandAll();
             stack.Push(node);
 
             while (stack.Count > 0)

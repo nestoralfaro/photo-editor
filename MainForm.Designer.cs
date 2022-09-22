@@ -29,9 +29,6 @@ namespace photo_editor
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
-            treeNode1});
             this.menuStripMainForm = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.locateOnDiskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -196,12 +193,6 @@ namespace photo_editor
             this.treeViewMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewMainForm.Location = new System.Drawing.Point(0, 0);
             this.treeViewMainForm.Name = "treeViewMainForm";
-            treeNode1.Name = "Node1";
-            treeNode1.Text = "Node1";
-            treeNode2.Name = "Node0";
-            treeNode2.Text = "Node0";
-            this.treeViewMainForm.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
             this.treeViewMainForm.Size = new System.Drawing.Size(200, 426);
             this.treeViewMainForm.TabIndex = 0;
             // 
