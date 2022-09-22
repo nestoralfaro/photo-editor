@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.Win32;
 
 namespace photo_editor
 {
@@ -17,6 +18,7 @@ namespace photo_editor
         private List<FileInfo> photoFiles;
         private List<ListViewItem> photoDetails;
         private ImageList thumbnails;
+        public Photo photo;
         public MainForm()
         {
             InitializeComponent();
@@ -122,6 +124,17 @@ namespace photo_editor
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void listViewMain_ItemActivate(object sender, EventArgs e)
+        {
+            String send = sender.ToString();
+            send = send.Remove(0, 72);
+            send = send.Remove(send.Length - 1, 1);
+            Console.WriteLine(send);
+            EditPhotoForm edit = new EditPhotoForm();
+            edit.Show();
+            photo.test = "hi";
         }
     }
 }

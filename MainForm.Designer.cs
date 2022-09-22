@@ -133,7 +133,7 @@ namespace photo_editor
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -176,7 +176,7 @@ namespace photo_editor
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -225,6 +225,7 @@ namespace photo_editor
             this.listViewMain.Size = new System.Drawing.Size(597, 426);
             this.listViewMain.TabIndex = 0;
             this.listViewMain.UseCompatibleStateImageBehavior = false;
+            this.listViewMain.ItemActivate += new System.EventHandler(this.listViewMain_ItemActivate);
             // 
             // MainForm
             // 
