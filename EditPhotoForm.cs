@@ -10,9 +10,11 @@ using System.Windows.Forms;
 
 namespace photo_editor
 {
+
     public partial class EditPhotoForm : Form
     {
         public string pic;
+        public ColorDialog colorDialog1 = new ColorDialog();
         public EditPhotoForm()
         {
             InitializeComponent();
@@ -35,12 +37,22 @@ namespace photo_editor
                 for (int x = 0; (x <= (photo.Width - 1)); x++)                                      
                 {                                                                                      
                     Color inv = photo.GetPixel(x, y);                                           
-                    inv = Color.FromArgb(255, (255 - inv.R), (255 - inv.G), (255 - inv.B));     
+                    inv = System.Drawing.Color.FromArgb(255, (255 - inv.R), (255 - inv.G), (255 - inv.B));     
                     photo.SetPixel(x, y, inv);                                                  
                 }
             }
             pictureBox1.Image = photo;
             //Citation End
+        }
+
+       
+
+        private void Color_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Color.BackColor = colorDialog1.Color;
+            }
         }
     }
 
