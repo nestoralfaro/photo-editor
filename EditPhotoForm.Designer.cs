@@ -36,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -43,21 +44,23 @@
             // Save
             // 
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Save.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Save.Location = new System.Drawing.Point(401, 465);
             this.Save.Name = "Save";
-            this.Save.Size = new System.Drawing.Size(75, 23);
+            this.Save.Size = new System.Drawing.Size(82, 36);
             this.Save.TabIndex = 0;
-            this.Save.Text = "Save";
+            this.Save.Text = "&Save";
             this.Save.UseVisualStyleBackColor = true;
             // 
             // Cancel
             // 
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Cancel.Location = new System.Drawing.Point(515, 465);
             this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Cancel.Size = new System.Drawing.Size(78, 36);
             this.Cancel.TabIndex = 1;
-            this.Cancel.Text = "Cancel";
+            this.Cancel.Text = "&Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
@@ -70,11 +73,12 @@
             // 
             // Invert
             // 
-            this.Invert.Location = new System.Drawing.Point(486, 399);
+            this.Invert.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Invert.Location = new System.Drawing.Point(486, 404);
             this.Invert.Name = "Invert";
-            this.Invert.Size = new System.Drawing.Size(75, 23);
+            this.Invert.Size = new System.Drawing.Size(81, 32);
             this.Invert.TabIndex = 3;
-            this.Invert.Text = "Invert";
+            this.Invert.Text = "&Invert";
             this.Invert.UseVisualStyleBackColor = true;
             this.Invert.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -112,11 +116,22 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Light";
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(241, 417);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(80, 30);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "&Color";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // EditPhotoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(631, 513);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -145,5 +160,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button1;
     }
 }
