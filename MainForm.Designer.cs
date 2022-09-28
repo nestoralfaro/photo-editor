@@ -29,9 +29,6 @@ namespace photo_editor
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Node1");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Node0", new System.Windows.Forms.TreeNode[] {
-            treeNode1});
             this.menuStripMainForm = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.locateOnDiskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,8 +50,10 @@ namespace photo_editor
             this.treeViewMainForm = new System.Windows.Forms.TreeView();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.listViewMain = new System.Windows.Forms.ListView();
             this.menuStripMainForm.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMainForm
@@ -136,6 +135,7 @@ namespace photo_editor
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
             this.exitToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -178,6 +178,7 @@ namespace photo_editor
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -194,14 +195,9 @@ namespace photo_editor
             this.treeViewMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewMainForm.Location = new System.Drawing.Point(0, 0);
             this.treeViewMainForm.Name = "treeViewMainForm";
-            treeNode1.Name = "Node1";
-            treeNode1.Text = "Node1";
-            treeNode2.Name = "Node0";
-            treeNode2.Text = "Node0";
-            this.treeViewMainForm.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
             this.treeViewMainForm.Size = new System.Drawing.Size(200, 426);
             this.treeViewMainForm.TabIndex = 0;
+            this.treeViewMainForm.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewMainForm_AfterSelect);
             // 
             // splitter1
             // 
@@ -214,11 +210,23 @@ namespace photo_editor
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.LightGray;
+            this.panel2.Controls.Add(this.listViewMain);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(203, 24);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(597, 426);
             this.panel2.TabIndex = 3;
+            // 
+            // listViewMain
+            // 
+            this.listViewMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewMain.HideSelection = false;
+            this.listViewMain.Location = new System.Drawing.Point(0, 0);
+            this.listViewMain.Name = "listViewMain";
+            this.listViewMain.Size = new System.Drawing.Size(597, 426);
+            this.listViewMain.TabIndex = 0;
+            this.listViewMain.UseCompatibleStateImageBehavior = false;
+            this.listViewMain.ItemActivate += new System.EventHandler(this.listViewMain_ItemActivate);
             // 
             // MainForm
             // 
@@ -236,6 +244,7 @@ namespace photo_editor
             this.menuStripMainForm.ResumeLayout(false);
             this.menuStripMainForm.PerformLayout();
             this.panel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -264,6 +273,7 @@ namespace photo_editor
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TreeView treeViewMainForm;
+        private System.Windows.Forms.ListView listViewMain;
     }
 }
 
