@@ -197,6 +197,7 @@ namespace photo_editor
             this.treeViewMainForm.Name = "treeViewMainForm";
             this.treeViewMainForm.Size = new System.Drawing.Size(200, 426);
             this.treeViewMainForm.TabIndex = 0;
+            this.treeViewMainForm.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewMainForm_AfterSelect);
             // 
             // splitter1
             // 
