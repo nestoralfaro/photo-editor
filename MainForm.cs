@@ -26,6 +26,7 @@ namespace photo_editor
             InitializeComponent();
 
             photoRootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            imageListDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
             Console.WriteLine("this is the photorootdire");
             Console.WriteLine(photoRootDirectory);
@@ -103,7 +104,7 @@ namespace photo_editor
                 DirectoryInfo directoryInfo = (DirectoryInfo)currentNode.Tag;
                 foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
                 {
-                    TreeNode childDirectoryNode = new TreeNode(directory.Name) { Tag = directory };
+                    TreeNode childDirectoryNode = new TreeNode(directory.Name) { Tag = directory};
                     currentNode.Nodes.Add(childDirectoryNode);
                     stack.Push(childDirectoryNode);
                 }
@@ -139,6 +140,13 @@ namespace photo_editor
             edit.pic = photoRootDirectory + "\\" + send;
             edit.ShowDialog();
 
+        }
+
+        private void treeViewMainForm_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            photoRootDirectory = ((DirectoryInfo)treeViewMainForm.SelectedNode.Tag).FullName;
+            listViewMain.Clear();
+            PopulateImageList();
         }
     }
 }
