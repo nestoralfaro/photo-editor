@@ -17,6 +17,7 @@ namespace photo_editor
 
     public partial class MainForm : Form
     {
+        private string imageListDirectory;
         private string photoRootDirectory;
         private List<FileInfo> photoFiles;
         private List<ListViewItem> photoDetails;
