@@ -26,6 +26,12 @@ namespace photo_editor
             InitializeComponent();
         }
 
+        // cancel clicked callback
+        private void Progress_CancelClicked()
+        {
+            cancellationTokenSource.Cancel();
+        }
+
         private void EditPhotoForm_Load(object sender, EventArgs e)
         {
             Console.WriteLine("pic edit photo form");
@@ -34,26 +40,34 @@ namespace photo_editor
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
-       
+
 
         private async void Color_Click(object sender, EventArgs e)
         {
             // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
             // Author: Frank McCown
             var Photo = new Bitmap(pictureBox1.Image);
-           // var token = cancellationTokenSource.Token;
+            cancellationTokenSource = new CancellationTokenSource();
+            var token = cancellationTokenSource.Token;
 
             int Total = (Photo.Height * Photo.Width) / 100;
             int percent = 0;
             progressForm progress = new progressForm();
-            progress.Show();
+            progress.CancelClicked += Progress_CancelClicked;
             Console.WriteLine(Total);
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
+                progress.Show();
+
                 await Task.Run(() =>
                 {
                     for (int y = 0; y < Photo.Height; y++)
                     {
+                        if (token.IsCancellationRequested)
+                        {
+                            break;
+                        }
+
                         for (int x = 0; x < Photo.Width; x++)
                         {
                             percent++;
@@ -76,17 +90,20 @@ namespace photo_editor
                     }
                 });
                 
-                pictureBox1.Image = Photo;
+                if (!token.IsCancellationRequested)pictureBox1.Image = Photo;
 
+                progress.Close();
             }
+
         }
-       
+
         private async void Invert_Click(object sender, EventArgs e)
         {
             cancellationTokenSource = new CancellationTokenSource();
             // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
             // Author: Frank McCown
             progressForm progress = new progressForm();
+            progress.CancelClicked += Progress_CancelClicked;
             Bitmap photo = new Bitmap(pictureBox1.Image);
             var count = 0;
             var token = cancellationTokenSource.Token;
@@ -124,10 +141,49 @@ namespace photo_editor
 
             this.Enabled = true;
             progress.Hide();
-            pictureBox1.Image = photo;
+            if (!token.IsCancellationRequested) pictureBox1.Image = photo;
 
             
         }
+
+        private async void brightnessTrackBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            progressForm pf = new progressForm();
+            // register listener for when the cancel button in progressForm was Clicked and execute Pf_CancelThread callback
+            pf.CancelClicked += Progress_CancelClicked;
+            cancellationTokenSource = new CancellationTokenSource();
+            var token = cancellationTokenSource.Token;
+
+            // Start asynchronous task
+            await Task.Run(() =>
+            {
+                // show progress form bar
+                Invoke((Action)(() =>
+                {
+                    pf.Show();
+                }));
+
+                // change image brightness (call ChangeBrightness()?)
+                while (!token.IsCancellationRequested)
+                {
+                    /*
+                     * If the cancellation has not been requested
+                     * (the cancel button has not been clicked)
+                     * then do the work necessary to change background color.
+                     * Notice that this part does not need to be in a while loop
+                     * it is just an illustration so that you can only do the
+                     * work while the token has not been requested to cancel
+                     */
+                }
+
+                // close progress form bar
+                Invoke((Action)(() =>
+                {
+                    pf.Close();
+                }));
+            });
+        }
+    }
     }
 
 }
