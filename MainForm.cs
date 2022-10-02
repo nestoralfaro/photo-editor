@@ -38,86 +38,94 @@ namespace photo_editor
             return (value / (double)Math.Pow(1024, (Int64)unit)).ToString("0.0") + (unit == SizeUnits.KB ? "KB" : "MB");
         }
 
-        private void PopulateImageList()
+        private async Task PopulateImageList()
         {
-            listViewMain.Clear();
             photoFiles = new List<FileInfo>();
-
             photoDetails = new List<ListViewItem>();
             thumbnails = new ImageList();
             thumbnails.ImageSize = new Size(64, 64);
 
             int imageIndex = 0;
 
-            // Create columns (Width of -2 indicates auto-size)
-            listViewMain.Columns.Add("Name", 240, HorizontalAlignment.Left);
-            listViewMain.Columns.Add("Date", 160, HorizontalAlignment.Left);
-            listViewMain.Columns.Add("Size", 80, HorizontalAlignment.Right);
-
-            DirectoryInfo homeDir = new DirectoryInfo(photoRootDirectory);
-
-            try
+            // Start a background thread
+            await Task.Run(() =>
             {
-                foreach (FileInfo file in homeDir.GetFiles("*.jpg"))
+                DirectoryInfo homeDir = new DirectoryInfo(photoRootDirectory);
+                try
                 {
-                    try
+                    foreach (FileInfo file in homeDir.GetFiles("*.jpg"))
                     {
-                        byte[] bytes = File.ReadAllBytes(file.FullName);
-                        MemoryStream ms = new MemoryStream(bytes);
-                        Image img = Image.FromStream(ms);
+                        try
+                        {
+                            byte[] bytes = File.ReadAllBytes(file.FullName);
+                            MemoryStream ms = new MemoryStream(bytes);
+                            Image img = Image.FromStream(ms);
 
-                        ListViewItem photoRow = new ListViewItem(file.Name, imageIndex);
-                        photoRow.SubItems.Add(file.LastWriteTime.ToString());
-                        // if it is less than 1048576 then show in kilobytes, otherwise in megabytes
-                        photoRow.SubItems.Add(file.Length < 1048576 ? ToSize(file.Length, SizeUnits.KB) : ToSize(file.Length, SizeUnits.MG));
-                        thumbnails.Images.Add(img);
-                        photoDetails.Add(photoRow);
-                        photoFiles.Add(file);
-                    }
-                    catch
-                    {
-                        Console.WriteLine("This is not an image file");
-                    }
+                            ListViewItem photoRow = new ListViewItem(file.Name, imageIndex);
+                            photoRow.SubItems.Add(file.LastWriteTime.ToString());
+                            // if it is less than 1048576 then show in kilobytes, otherwise in megabytes
+                            photoRow.SubItems.Add(file.Length < 1048576 ? ToSize(file.Length, SizeUnits.KB) : ToSize(file.Length, SizeUnits.MG));
+                            thumbnails.Images.Add(img);
+                            photoDetails.Add(photoRow);
+                            photoFiles.Add(file);
+                        }
+                        catch
+                        {
+                            Console.WriteLine("This is not an image file");
+                        }
 
-                    //photoFiles.Add(file);
-                    ++imageIndex;
+                        //photoFiles.Add(file);
+                        ++imageIndex;
+                    }
                 }
-            } catch (UnauthorizedAccessException blockedPath)
-            {
-                // ignore this path and move on
-            }
+                catch (UnauthorizedAccessException blockedPath)
+                {
+                    // ignore this path and move on
+                }
 
+                // Run code on UI thread
 
-            // Add the items to the list view
-            listViewMain.Items.AddRange(photoDetails.ToArray());
+                Invoke((Action)(() =>
+                {
+                    listViewMain.Clear();
 
-            if (detailsToolStripMenuItem.Checked)
-            {
-                // Show default view
-                listViewMain.View = View.Details;
+                    // Create columns (Width of -2 indicates auto-size)
+                    listViewMain.Columns.Add("Name", 240, HorizontalAlignment.Left);
+                    listViewMain.Columns.Add("Date", 160, HorizontalAlignment.Left);
+                    listViewMain.Columns.Add("Size", 80, HorizontalAlignment.Right);
 
-                // Assign the ImageLists to the ListView
-                listViewMain.SmallImageList = thumbnails;
-            }
-            else if (smallToolStripMenuItem.Checked)
-            {
-                // Show default view
-                listViewMain.View = View.SmallIcon;
+                    // Add the items to the list view
+                    listViewMain.Items.AddRange(photoDetails.ToArray());
+                    if (detailsToolStripMenuItem.Checked)
+                    {
+                        // Show default view
+                        listViewMain.View = View.Details;
 
-                // Assign the ImageLists to the ListView
-                listViewMain.SmallImageList = thumbnails;
+                        // Assign the ImageLists to the ListView
+                        listViewMain.SmallImageList = thumbnails;
+                    }
+                    else if (smallToolStripMenuItem.Checked)
+                    {
+                        // Show default view
+                        listViewMain.View = View.SmallIcon;
 
-            } else if (largeToolStripMenuItem.Checked)
-            {
-                // Increase image size
-                thumbnails.ImageSize = new Size(128, 128);
+                        // Assign the ImageLists to the ListView
+                        listViewMain.SmallImageList = thumbnails;
 
-                // Show default view
-                listViewMain.View = View.LargeIcon;
+                    }
+                    else if (largeToolStripMenuItem.Checked)
+                    {
+                        // Increase image size
+                        thumbnails.ImageSize = new Size(128, 128);
 
-                // Assign the ImageLists to the ListView
-                listViewMain.LargeImageList = thumbnails;
-            }
+                        // Show default view
+                        listViewMain.View = View.LargeIcon;
+
+                        // Assign the ImageLists to the ListView
+                        listViewMain.LargeImageList = thumbnails;
+                    }
+                }));
+            });
         }
 
         private void PopulateTreeView()
@@ -182,13 +190,16 @@ namespace photo_editor
 
         }
 
-        private void treeViewMainForm_AfterSelect(object sender, TreeViewEventArgs e)
+        private async void treeViewMainForm_AfterSelect(object sender, TreeViewEventArgs e)
         {
             photoRootDirectory = ((DirectoryInfo)treeViewMainForm.SelectedNode.Tag).FullName;
-            PopulateImageList();
+            progressBarMainForm.Visible = true;
+            await PopulateImageList();
+            progressBarMainForm.Visible = false;
+
         }
 
-        private void onToolStripMenuItemChange(object sender, EventArgs e)
+        private async void onToolStripMenuItemChange(object sender, EventArgs e)
         {
             // Uncheck all the menu items from viewToolStripMenuItem
             foreach (ToolStripMenuItem item in viewToolStripMenuItem.DropDownItems)
@@ -201,7 +212,10 @@ namespace photo_editor
             menuItem.Checked = true;
 
             // Render image list
-            PopulateImageList();
+            progressBarMainForm.Visible = true;
+            await PopulateImageList();
+            progressBarMainForm.Visible = false;
+
         }
 
         private void locateOnDiskToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -218,15 +232,18 @@ namespace photo_editor
             }
         }
 
-        private void selectRootFolderToolStripMenuItem1_Click(object sender, EventArgs e)
+        private async void selectRootFolderToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             folderBrowserDialog.ShowDialog();
             if (folderBrowserDialog.SelectedPath != "")
             {
                 photoRootDirectory = folderBrowserDialog.SelectedPath;
-                PopulateImageList();
+                progressBarMainForm.Visible = true;
+                await PopulateImageList();
                 PopulateTreeView();
+                progressBarMainForm.Visible = false;
+
             }
         }
     }

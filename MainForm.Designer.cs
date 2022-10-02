@@ -243,9 +243,9 @@ namespace photo_editor
             this.progressBarMainForm.Location = new System.Drawing.Point(246, 18);
             this.progressBarMainForm.Name = "progressBarMainForm";
             this.progressBarMainForm.Size = new System.Drawing.Size(520, 10);
-            this.progressBarMainForm.Step = 50;
             this.progressBarMainForm.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBarMainForm.TabIndex = 1;
+            this.progressBarMainForm.Value = 50;
             this.progressBarMainForm.Visible = false;
             // 
             // MainForm
