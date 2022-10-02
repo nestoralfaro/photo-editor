@@ -55,6 +55,7 @@ namespace photo_editor
             
             var token = cancellationTokenSource.Token;
             progress.Show();
+            this.Enabled = false;
             await Task.Run(() =>    // Start a background thread
             {
                 for (int y = 0; y < photo.Height; y++)
@@ -84,7 +85,7 @@ namespace photo_editor
                     }
                 }
             }, token);
-
+            this.Enabled = true;
             progress.Hide();
             pictureBox1.Image = photo;
 
