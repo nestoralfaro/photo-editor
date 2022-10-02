@@ -222,6 +222,7 @@ namespace photo_editor
             this.listViewMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewMain.HideSelection = false;
             this.listViewMain.Location = new System.Drawing.Point(0, 0);
+            this.listViewMain.MultiSelect = false;
             this.listViewMain.Name = "listViewMain";
             this.listViewMain.Size = new System.Drawing.Size(597, 426);
             this.listViewMain.TabIndex = 0;
@@ -240,7 +241,6 @@ namespace photo_editor
             this.MainMenuStrip = this.menuStripMainForm;
             this.Name = "MainForm";
             this.Text = "R&D\'s Photo Editor";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStripMainForm.ResumeLayout(false);
             this.menuStripMainForm.PerformLayout();
             this.panel1.ResumeLayout(false);
