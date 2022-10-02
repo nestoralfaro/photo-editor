@@ -24,6 +24,7 @@ namespace photo_editor
 
         private void EditPhotoForm_Load(object sender, EventArgs e)
         {
+            Console.WriteLine("pic edit photo form");
             Console.WriteLine(pic);
             pictureBox1.Image = Image.FromFile(pic);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
