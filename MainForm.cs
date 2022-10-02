@@ -17,6 +17,7 @@ namespace photo_editor
 
     public partial class MainForm : Form
     {
+        public EditPhotoForm edit = new EditPhotoForm();
         private string imageListDirectory;
         private string photoRootDirectory;
         private List<FileInfo> photoFiles;
@@ -136,7 +137,7 @@ namespace photo_editor
             send = send.Remove(0, 72);
             send = send.Remove(send.Length - 1, 1);
             Console.WriteLine(send);
-            EditPhotoForm edit = new EditPhotoForm();
+            //EditPhotoForm edit = new EditPhotoForm();
            
             edit.pic = photoRootDirectory + "\\" + send;
             edit.ShowDialog();

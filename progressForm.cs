@@ -16,5 +16,17 @@ namespace photo_editor
         {
             InitializeComponent();
         }
+
+        
+
+        public void IncrementProgress(int i)
+        {
+            progressBar1.Increment(i);
+        }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

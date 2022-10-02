@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Cancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -50,23 +50,24 @@
             this.progressBar1.Size = new System.Drawing.Size(275, 41);
             this.progressBar1.TabIndex = 1;
             // 
-            // button1
+            // Cancel
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(101, 175);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 30);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Cancel";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Cancel.Location = new System.Drawing.Point(101, 175);
+            this.Cancel.Name = "Cancel";
+            this.Cancel.Size = new System.Drawing.Size(75, 30);
+            this.Cancel.TabIndex = 2;
+            this.Cancel.Text = "Cancel";
+            this.Cancel.UseVisualStyleBackColor = true;
+            this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // progressForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 217);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Cancel);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label1);
             this.Name = "progressForm";
@@ -80,6 +81,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Cancel;
     }
 }
