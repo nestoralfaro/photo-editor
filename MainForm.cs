@@ -179,16 +179,17 @@ namespace photo_editor
 
         private void listViewMain_ItemActivate(object sender, EventArgs e)
         {
-            String send = sender.ToString();
-            send = send.Remove(0, 72);
-            send = send.Remove(send.Length - 1, 1);
+            //String send = sender.ToString();
+            //send = send.Remove(0, 72);
+            //send = send.Remove(send.Length - 1, 1);
+            String send = listViewMain.SelectedItems[0].Text;
+            
             Console.WriteLine("current image selected?");
             Console.WriteLine(send);
             EditPhotoForm edit = new EditPhotoForm();
            
             edit.pic = photoRootDirectory + "\\" + send;
             edit.ShowDialog();
-
         }
 
         private async void treeViewMainForm_AfterSelect(object sender, TreeViewEventArgs e)
@@ -197,7 +198,6 @@ namespace photo_editor
             progressBarMainForm.Visible = true;
             await PopulateImageList();
             progressBarMainForm.Visible = false;
-
         }
 
         private async void onToolStripMenuItemChange(object sender, EventArgs e)
