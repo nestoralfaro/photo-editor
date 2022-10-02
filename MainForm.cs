@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +15,6 @@ using photo_editor;
 
 namespace photo_editor
 {
-
     public partial class MainForm : Form
     {
         private string photoRootDirectory;
@@ -24,67 +24,100 @@ namespace photo_editor
         public MainForm()
         {
             InitializeComponent();
+            //progressBarMainForm.Visible = false;
 
             photoRootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            imageListDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-
-            Console.WriteLine("this is the photorootdire");
-            Console.WriteLine(photoRootDirectory);
 
             PopulateImageList();
             PopulateTreeView();
+        }
 
+        private enum SizeUnits { KB = 1, MG };
+        private static string ToSize(Int64 value, SizeUnits unit)
+        {
+            return (value / (double)Math.Pow(1024, (Int64)unit)).ToString("0.0") + (unit == SizeUnits.KB ? "KB" : "MB");
         }
 
         private void PopulateImageList()
         {
+            listViewMain.Clear();
             photoFiles = new List<FileInfo>();
 
             photoDetails = new List<ListViewItem>();
             thumbnails = new ImageList();
-            thumbnails.ImageSize = new Size(32, 32);
+            thumbnails.ImageSize = new Size(64, 64);
 
             int imageIndex = 0;
 
             // Create columns (Width of -2 indicates auto-size)
-            listViewMain.Columns.Add("Name", -2, HorizontalAlignment.Left);
-            listViewMain.Columns.Add("Date", -2, HorizontalAlignment.Left);
-            listViewMain.Columns.Add("Size", 40, HorizontalAlignment.Right);
+            listViewMain.Columns.Add("Name", 240, HorizontalAlignment.Left);
+            listViewMain.Columns.Add("Date", 160, HorizontalAlignment.Left);
+            listViewMain.Columns.Add("Size", 80, HorizontalAlignment.Right);
 
             DirectoryInfo homeDir = new DirectoryInfo(photoRootDirectory);
-            foreach (FileInfo file in homeDir.GetFiles("*.jpg"))
-            //foreach (FileInfo file in homeDir.EnumerateFiles("*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".jpg") || s.EndsWith(".jpg")))
+
+            try
             {
-                try
+                foreach (FileInfo file in homeDir.GetFiles("*.jpg"))
                 {
-                    byte[] bytes = File.ReadAllBytes(file.FullName);
-                    MemoryStream ms = new MemoryStream(bytes);
-                    Image img = Image.FromStream(ms);
+                    try
+                    {
+                        byte[] bytes = File.ReadAllBytes(file.FullName);
+                        MemoryStream ms = new MemoryStream(bytes);
+                        Image img = Image.FromStream(ms);
 
-                    ListViewItem photoRow = new ListViewItem(file.Name, imageIndex);
-                    photoRow.SubItems.Add(file.LastWriteTime.ToString());
-                    photoRow.SubItems.Add(file.Length.ToString());
-                    thumbnails.Images.Add(img);
-                    photoDetails.Add(photoRow);
-                    photoFiles.Add(file);
-                }
-                catch
-                {
-                    Console.WriteLine("This is not an image file");
-                }
+                        ListViewItem photoRow = new ListViewItem(file.Name, imageIndex);
+                        photoRow.SubItems.Add(file.LastWriteTime.ToString());
+                        // if it is less than 1048576 then show in kilobytes, otherwise in megabytes
+                        photoRow.SubItems.Add(file.Length < 1048576 ? ToSize(file.Length, SizeUnits.KB) : ToSize(file.Length, SizeUnits.MG));
+                        thumbnails.Images.Add(img);
+                        photoDetails.Add(photoRow);
+                        photoFiles.Add(file);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("This is not an image file");
+                    }
 
-                //photoFiles.Add(file);
-                ++imageIndex;
+                    //photoFiles.Add(file);
+                    ++imageIndex;
+                }
+            } catch (UnauthorizedAccessException blockedPath)
+            {
+                // ignore this path and move on
             }
+
 
             // Add the items to the list view
             listViewMain.Items.AddRange(photoDetails.ToArray());
 
-            // Show default view
-            listViewMain.View = View.Details;
+            if (detailsToolStripMenuItem.Checked)
+            {
+                // Show default view
+                listViewMain.View = View.Details;
 
-            // Assign the ImageLists to the ListView
-            listViewMain.SmallImageList = thumbnails;
+                // Assign the ImageLists to the ListView
+                listViewMain.SmallImageList = thumbnails;
+            }
+            else if (smallToolStripMenuItem.Checked)
+            {
+                // Show default view
+                listViewMain.View = View.SmallIcon;
+
+                // Assign the ImageLists to the ListView
+                listViewMain.SmallImageList = thumbnails;
+
+            } else if (largeToolStripMenuItem.Checked)
+            {
+                // Increase image size
+                thumbnails.ImageSize = new Size(128, 128);
+
+                // Show default view
+                listViewMain.View = View.LargeIcon;
+
+                // Assign the ImageLists to the ListView
+                listViewMain.LargeImageList = thumbnails;
+            }
         }
 
         private void PopulateTreeView()
@@ -102,11 +135,17 @@ namespace photo_editor
             {
                 TreeNode currentNode = stack.Pop();
                 DirectoryInfo directoryInfo = (DirectoryInfo)currentNode.Tag;
-                foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+                try
                 {
-                    TreeNode childDirectoryNode = new TreeNode(directory.Name) { Tag = directory};
-                    currentNode.Nodes.Add(childDirectoryNode);
-                    stack.Push(childDirectoryNode);
+                    foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+                    {
+                        TreeNode childDirectoryNode = new TreeNode(directory.Name) { Tag = directory };
+                        currentNode.Nodes.Add(childDirectoryNode);
+                        stack.Push(childDirectoryNode);
+                    }
+                } catch (UnauthorizedAccessException blockedPath)
+                {
+                    // ignore this path and move on
                 }
             }
 
@@ -134,6 +173,7 @@ namespace photo_editor
             String send = sender.ToString();
             send = send.Remove(0, 72);
             send = send.Remove(send.Length - 1, 1);
+            Console.WriteLine("current image selected?");
             Console.WriteLine(send);
             EditPhotoForm edit = new EditPhotoForm();
            
@@ -145,8 +185,49 @@ namespace photo_editor
         private void treeViewMainForm_AfterSelect(object sender, TreeViewEventArgs e)
         {
             photoRootDirectory = ((DirectoryInfo)treeViewMainForm.SelectedNode.Tag).FullName;
-            listViewMain.Clear();
             PopulateImageList();
+        }
+
+        private void onToolStripMenuItemChange(object sender, EventArgs e)
+        {
+            // Uncheck all the menu items from viewToolStripMenuItem
+            foreach (ToolStripMenuItem item in viewToolStripMenuItem.DropDownItems)
+            {
+                item.Checked = false;
+            }
+
+            // Check the one item that was clicked
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            menuItem.Checked = true;
+
+            // Render image list
+            PopulateImageList();
+        }
+
+        private void locateOnDiskToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listViewMain.SelectedItems.Count == 0)
+            {
+                MessageBox.Show(this, "First select an image, then choose this option to see its location on disk.", "No image selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            } else
+            {
+                // Open explorer with the selected image
+                Process.Start("explorer.exe", "/select," + photoRootDirectory + "\\" + listViewMain.SelectedItems[0].Text);
+            }
+        }
+
+        private void selectRootFolderToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            folderBrowserDialog.ShowDialog();
+            if (folderBrowserDialog.SelectedPath != "")
+            {
+                photoRootDirectory = folderBrowserDialog.SelectedPath;
+                PopulateImageList();
+                PopulateTreeView();
+            }
         }
     }
 }
