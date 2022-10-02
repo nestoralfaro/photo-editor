@@ -20,8 +20,6 @@ namespace photo_editor
             InitializeComponent();
         }
 
-        
-
         private void EditPhotoForm_Load(object sender, EventArgs e)
         {
             Console.WriteLine("pic edit photo form");

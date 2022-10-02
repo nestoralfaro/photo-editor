@@ -197,7 +197,6 @@ namespace photo_editor
             progressBarMainForm.Visible = true;
             await PopulateImageList();
             progressBarMainForm.Visible = false;
-
         }
 
         private async void onToolStripMenuItemChange(object sender, EventArgs e)
