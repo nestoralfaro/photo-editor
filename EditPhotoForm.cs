@@ -19,6 +19,7 @@ namespace photo_editor
         public ColorDialog colorDialog1 = new ColorDialog();
         public int progress = 0;
         private CancellationTokenSource cancellationTokenSource;
+        
 
         public EditPhotoForm()
         {
@@ -36,48 +37,51 @@ namespace photo_editor
 
        
 
-        private void Color_Click(object sender, EventArgs e)
+        private async void Color_Click(object sender, EventArgs e)
         {
             // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
             // Author: Frank McCown
             var Photo = new Bitmap(pictureBox1.Image);
+           // var token = cancellationTokenSource.Token;
+
+            int Total = (Photo.Height * Photo.Width) / 100;
+            int percent = 0;
+            progressForm progress = new progressForm();
+            progress.Show();
+            Console.WriteLine(Total);
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                for (int y = 0; y < Photo.Height; y++)
+                await Task.Run(() =>
                 {
-                    for (int x = 0; x < Photo.Width; x++)
+                    for (int y = 0; y < Photo.Height; y++)
                     {
-                        var color = Photo.GetPixel(x, y);
-                        int ave = (color.R + color.G + color.B) / 3;
-                        double percent = ave / 255.0;
-                        int newRed = Convert.ToInt32(colorDialog1.Color.R * percent);
-                        int newGreen = Convert.ToInt32(colorDialog1.Color.G * percent);
-                        int newBlue = Convert.ToInt32(colorDialog1.Color.B * percent);
-                        var newColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
-                        Photo.SetPixel(x, y, newColor);
+                        for (int x = 0; x < Photo.Width; x++)
+                        {
+                            percent++;
+                            var color = Photo.GetPixel(x, y);
+                            int ave = (color.R + color.G + color.B) / 3;
+                            double per = ave / 255.0;
+                            int newRed = Convert.ToInt32(colorDialog1.Color.R * per);
+                            int newGreen = Convert.ToInt32(colorDialog1.Color.G * per);
+                            int newBlue = Convert.ToInt32(colorDialog1.Color.B * per);
+                            var newColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
+                            Photo.SetPixel(x, y, newColor);
+                            if(percent % Total == 0)
+                            {
+                                Invoke((Action)(() =>
+                                {
+                                    progress.IncrementProgress(10);
+                                }));
+                            }
+                        }
                     }
-                }
+                });
+                
                 pictureBox1.Image = Photo;
 
             }
         }
-        private void AlterColors(Bitmap transformedBitmap, Color chosenColor)
-        {
-            for (int y = 0; y < transformedBitmap.Height; y++)
-            {
-                for (int x = 0; x < transformedBitmap.Width; x++)
-                {
-                    var color = transformedBitmap.GetPixel(x, y);
-                    int ave = (color.R + color.G + color.B) / 3;
-                    double percent = ave / 255.0;
-                    int newRed = Convert.ToInt32(chosenColor.R * percent);
-                    int newGreen = Convert.ToInt32(chosenColor.G * percent);
-                    int newBlue = Convert.ToInt32(chosenColor.B * percent);
-                    var newColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
-                    transformedBitmap.SetPixel(x, y, newColor);
-                }
-            }
-        }
+       
         private async void Invert_Click(object sender, EventArgs e)
         {
             cancellationTokenSource = new CancellationTokenSource();
@@ -85,9 +89,10 @@ namespace photo_editor
             // Author: Frank McCown
             progressForm progress = new progressForm();
             Bitmap photo = new Bitmap(pictureBox1.Image);
-            var percent = 0;
-            
+            var count = 0;
             var token = cancellationTokenSource.Token;
+
+            double percent = (photo.Height * photo.Width) / 100;
             progress.Show();
             this.Enabled = false;
             await Task.Run(() =>    // Start a background thread
@@ -100,27 +105,24 @@ namespace photo_editor
                         {
                             break;
                         }
-                        percent++;
+                        count++;
                         var color = photo.GetPixel(x, y);
                         int newRed = Math.Abs(color.R - 255);
                         int newGreen = Math.Abs(color.G - 255);
                         int newBlue = Math.Abs(color.B - 255);
                         Color tempColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
                         photo.SetPixel(x, y, tempColor);
-                        if (percent % 3555 == 0)
+                        if (count % percent == 0)
                         {
-                            
                             Invoke((Action)(() =>
                             {
-                                
                                 progress.IncrementProgress(10);
-                                
                             }));
-
                         }
                     }
                 }
             }, token);
+
             this.Enabled = true;
             progress.Hide();
             pictureBox1.Image = photo;
