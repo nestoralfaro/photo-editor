@@ -17,6 +17,7 @@ namespace photo_editor
 {
     public partial class MainForm : Form
     {
+        public EditPhotoForm edit = new EditPhotoForm();
         private string imageListDirectory;
         private string photoRootDirectory;
         private List<FileInfo> photoFiles;
@@ -161,10 +162,7 @@ namespace photo_editor
             treeViewMainForm.Nodes.Add(node);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
-        }
+   
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -186,7 +184,7 @@ namespace photo_editor
             
             Console.WriteLine("current image selected?");
             Console.WriteLine(send);
-            EditPhotoForm edit = new EditPhotoForm();
+            //EditPhotoForm edit = new EditPhotoForm();
            
             edit.pic = photoRootDirectory + "\\" + send;
             edit.ShowDialog();

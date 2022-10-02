@@ -262,7 +262,6 @@ namespace photo_editor
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.Text = "R&D\'s Photo Editor";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStripMainForm.ResumeLayout(false);
             this.menuStripMainForm.PerformLayout();
             this.panel1.ResumeLayout(false);
