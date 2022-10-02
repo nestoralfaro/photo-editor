@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,10 +20,11 @@ namespace photo_editor
         public ColorDialog colorDialog1 = new ColorDialog();
         public int progress = 0;
         private CancellationTokenSource cancellationTokenSource;
-        
+        private Bitmap photo;
 
         public EditPhotoForm()
         {
+            
             InitializeComponent();
         }
 
@@ -41,31 +43,31 @@ namespace photo_editor
         {
             // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
             // Author: Frank McCown
-            var Photo = new Bitmap(pictureBox1.Image);
+            photo = new Bitmap(pictureBox1.Image);
            // var token = cancellationTokenSource.Token;
 
-            int Total = (Photo.Height * Photo.Width) / 100;
+            int Total = (photo.Height * photo.Width) / 100;
             int percent = 0;
             progressForm progress = new progressForm();
-            progress.Show();
-            Console.WriteLine(Total);
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
+                progress.Show();
+
                 await Task.Run(() =>
                 {
-                    for (int y = 0; y < Photo.Height; y++)
+                    for (int y = 0; y < photo.Height; y++)
                     {
-                        for (int x = 0; x < Photo.Width; x++)
+                        for (int x = 0; x < photo.Width; x++)
                         {
                             percent++;
-                            var color = Photo.GetPixel(x, y);
+                            var color = photo.GetPixel(x, y);
                             int ave = (color.R + color.G + color.B) / 3;
                             double per = ave / 255.0;
                             int newRed = Convert.ToInt32(colorDialog1.Color.R * per);
                             int newGreen = Convert.ToInt32(colorDialog1.Color.G * per);
                             int newBlue = Convert.ToInt32(colorDialog1.Color.B * per);
                             var newColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
-                            Photo.SetPixel(x, y, newColor);
+                            photo.SetPixel(x, y, newColor);
                             if(percent % Total == 0)
                             {
                                 Invoke((Action)(() =>
@@ -77,7 +79,8 @@ namespace photo_editor
                     }
                 });
                 
-                pictureBox1.Image = Photo;
+                pictureBox1.Image = photo;
+                progress.Hide();        // Hide Progress bar
 
             }
         }
@@ -88,7 +91,7 @@ namespace photo_editor
             // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
             // Author: Frank McCown
             progressForm progress = new progressForm();
-            Bitmap photo = new Bitmap(pictureBox1.Image);
+            photo = new Bitmap(pictureBox1.Image);
             var count = 0;
             var token = cancellationTokenSource.Token;
 
@@ -126,9 +129,17 @@ namespace photo_editor
             this.Enabled = true;
             progress.Hide();
             pictureBox1.Image = photo;
-
             
         }
+
+        private void Save_Click(object sender, EventArgs e)
+        {
+            if(photo != null)
+            {
+
+            }
+        }
+        
     }
 
 }
