@@ -162,10 +162,7 @@ namespace photo_editor
             treeViewMainForm.Nodes.Add(node);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
-        }
+   
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
