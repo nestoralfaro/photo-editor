@@ -38,12 +38,46 @@ namespace photo_editor
 
         private void Color_Click(object sender, EventArgs e)
         {
+            // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
+            // Author: Frank McCown
+            var Photo = new Bitmap(pictureBox1.Image);
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                Color.BackColor = colorDialog1.Color;
+                for (int y = 0; y < Photo.Height; y++)
+                {
+                    for (int x = 0; x < Photo.Width; x++)
+                    {
+                        var color = Photo.GetPixel(x, y);
+                        int ave = (color.R + color.G + color.B) / 3;
+                        double percent = ave / 255.0;
+                        int newRed = Convert.ToInt32(colorDialog1.Color.R * percent);
+                        int newGreen = Convert.ToInt32(colorDialog1.Color.G * percent);
+                        int newBlue = Convert.ToInt32(colorDialog1.Color.B * percent);
+                        var newColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
+                        Photo.SetPixel(x, y, newColor);
+                    }
+                }
+                pictureBox1.Image = Photo;
+
             }
         }
-
+        private void AlterColors(Bitmap transformedBitmap, Color chosenColor)
+        {
+            for (int y = 0; y < transformedBitmap.Height; y++)
+            {
+                for (int x = 0; x < transformedBitmap.Width; x++)
+                {
+                    var color = transformedBitmap.GetPixel(x, y);
+                    int ave = (color.R + color.G + color.B) / 3;
+                    double percent = ave / 255.0;
+                    int newRed = Convert.ToInt32(chosenColor.R * percent);
+                    int newGreen = Convert.ToInt32(chosenColor.G * percent);
+                    int newBlue = Convert.ToInt32(chosenColor.B * percent);
+                    var newColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
+                    transformedBitmap.SetPixel(x, y, newColor);
+                }
+            }
+        }
         private async void Invert_Click(object sender, EventArgs e)
         {
             cancellationTokenSource = new CancellationTokenSource();
@@ -63,7 +97,9 @@ namespace photo_editor
                     for (int x = 0; x < photo.Width; x++)
                     {
                         if (token.IsCancellationRequested)
+                        {
                             break;
+                        }
                         percent++;
                         var color = photo.GetPixel(x, y);
                         int newRed = Math.Abs(color.R - 255);
