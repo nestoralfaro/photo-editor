@@ -11,18 +11,21 @@ using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
 using photo_editor;
-
+using System.Drawing.Imaging;
 
 namespace photo_editor
 {
     public partial class MainForm : Form
     {
-        public EditPhotoForm edit = new EditPhotoForm();
+        //public EditPhotoForm edit;
+        public String send;
+        public String location;
         private string imageListDirectory;
         private string photoRootDirectory;
         private List<FileInfo> photoFiles;
         private List<ListViewItem> photoDetails;
         private ImageList thumbnails;
+        public string fileName;
         public MainForm()
         {
             InitializeComponent();
@@ -177,16 +180,12 @@ namespace photo_editor
 
         private void listViewMain_ItemActivate(object sender, EventArgs e)
         {
-            //String send = sender.ToString();
-            //send = send.Remove(0, 72);
-            //send = send.Remove(send.Length - 1, 1);
-            String send = listViewMain.SelectedItems[0].Text;
-            
+            String imageOpened = listViewMain.SelectedItems[0].Text;
             Console.WriteLine("current image selected?");
-            Console.WriteLine(send);
-            //EditPhotoForm edit = new EditPhotoForm();
+            Console.WriteLine(imageOpened);
+            EditPhotoForm edit = new EditPhotoForm();
            
-            edit.pic = photoRootDirectory + "\\" + send;
+            edit.pic = photoRootDirectory + "\\" + imageOpened;
             edit.ShowDialog();
         }
 
@@ -245,5 +244,6 @@ namespace photo_editor
 
             }
         }
+       
     }
 }
