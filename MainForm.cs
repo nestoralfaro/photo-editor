@@ -180,14 +180,12 @@ namespace photo_editor
 
         private void listViewMain_ItemActivate(object sender, EventArgs e)
         {
-            String send = sender.ToString();
-            send = send.Remove(0, 72);
-            send = send.Remove(send.Length - 1, 1);
+            String imageOpened = listViewMain.SelectedItems[0].Text;
             Console.WriteLine("current image selected?");
-            Console.WriteLine(send);
+            Console.WriteLine(imageOpened);
             EditPhotoForm edit = new EditPhotoForm();
            
-            edit.pic = photoRootDirectory + "\\" + send;
+            edit.pic = photoRootDirectory + "\\" + imageOpened;
             edit.ShowDialog();
         }
 

@@ -12,7 +12,6 @@ using System.Windows.Forms;
 
 namespace photo_editor
 {
-
     public partial class EditPhotoForm : Form
     {
         public string pic;
@@ -20,8 +19,8 @@ namespace photo_editor
         public ColorDialog colorDialog1 = new ColorDialog();
         public int progress = 0;
         private CancellationTokenSource cancellationTokenSource;
-        
-
+        private bool isOperationBrightness;
+        private int brightness;
         public EditPhotoForm()
         {
             InitializeComponent();
@@ -31,6 +30,10 @@ namespace photo_editor
         private void Progress_CancelClicked()
         {
             cancellationTokenSource.Cancel();
+            if (isOperationBrightness)
+            {
+                brightnessTrackBar.Value = 50;
+            }
         }
 
         private void EditPhotoForm_Load(object sender, EventArgs e)
@@ -39,15 +42,13 @@ namespace photo_editor
             Console.WriteLine(pic);
             pictureBox1.Image = Image.FromFile(pic);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
         }
-
-
-
         private async void Color_Click(object sender, EventArgs e)
         {
             // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
             // Author: Frank McCown
-            var Photo = new Bitmap(pictureBox1.Image);
+            var photo = new Bitmap(pictureBox1.Image);
             cancellationTokenSource = new CancellationTokenSource();
             var token = cancellationTokenSource.Token;
 
@@ -58,6 +59,7 @@ namespace photo_editor
             Console.WriteLine(Total);
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
+                isOperationBrightness = false;
                 progress.Show();
 
                 await Task.Run(() =>
@@ -69,7 +71,7 @@ namespace photo_editor
                             break;
                         }
 
-                        for (int x = 0; x < Photo.Width; x++)
+                        for (int x = 0; x < photo.Width; x++)
                         {
                             percent++;
                             var color = photo.GetPixel(x, y);
@@ -91,7 +93,7 @@ namespace photo_editor
                     }
                 });
                 
-                if (!token.IsCancellationRequested)pictureBox1.Image = Photo;
+                if (!token.IsCancellationRequested)pictureBox1.Image = photo;
 
                 progress.Close();
             }
@@ -109,11 +111,12 @@ namespace photo_editor
             var count = 0;
             var token = cancellationTokenSource.Token;
 
-            double percent = (photo.Height * photo.Width) / 100;
-            progress.Show();
-            this.Enabled = false;
+            double onePercent = (photo.Height * photo.Width) / 100;    // Calulates 1 percent of the number of pixels in the photo
+            progress.Show();    
+            this.Enabled = false;                                       // Disable EditPhotoForm while performing operation
             await Task.Run(() =>    // Start a background thread
             {
+                isOperationBrightness = false;
                 for (int y = 0; y < photo.Height; y++)
                 {
                     for (int x = 0; x < photo.Width; x++)
@@ -129,7 +132,7 @@ namespace photo_editor
                         int newBlue = Math.Abs(color.B - 255);
                         Color tempColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
                         photo.SetPixel(x, y, tempColor);
-                        if (count % percent == 0)
+                        if (count % onePercent == 0)
                         {
                             Invoke((Action)(() =>
                             {
@@ -140,8 +143,8 @@ namespace photo_editor
                 }
             }, token);
 
-            this.Enabled = true;
-            progress.Hide();
+            this.Enabled = true;            // Enable EditPhotoForm 
+            progress.Hide();                // Hide progress bar form
             if (!token.IsCancellationRequested) pictureBox1.Image = photo;
 
             
@@ -149,42 +152,72 @@ namespace photo_editor
 
         private async void brightnessTrackBar_MouseUp(object sender, MouseEventArgs e)
         {
+            cancellationTokenSource = new CancellationTokenSource();
             progressForm pf = new progressForm();
             // register listener for when the cancel button in progressForm was Clicked and execute Pf_CancelThread callback
             pf.CancelClicked += Progress_CancelClicked;
-            cancellationTokenSource = new CancellationTokenSource();
+            var photo = new Bitmap(pictureBox1.Image);
             var token = cancellationTokenSource.Token;
-
+            int onePercent = (photo.Height * photo.Width) / 100;
+            int counter = 0;
             // Start asynchronous task
+            pf.Show();
+
             await Task.Run(() =>
             {
+
+                isOperationBrightness = true;
                 // show progress form bar
-                Invoke((Action)(() =>
-                {
-                    pf.Show();
-                }));
+
 
                 // change image brightness (call ChangeBrightness()?)
-                while (!token.IsCancellationRequested)
-                {
-                    /*
-                     * If the cancellation has not been requested
-                     * (the cancel button has not been clicked)
-                     * then do the work necessary to change background color.
-                     * Notice that this part does not need to be in a while loop
-                     * it is just an illustration so that you can only do the
-                     * work while the token has not been requested to cancel
-                     */
-                }
 
-                // close progress form bar
+
+
+
                 Invoke((Action)(() =>
                 {
-                    pf.Close();
+                    brightness = brightnessTrackBar.Value;
+
                 }));
+
+                    int amount = Convert.ToInt32(2 * (50 - brightness) * 0.01 * 255);
+                    for (int y = 0; y < photo.Height; y++)
+                    {
+                        for (int x = 0; x < photo.Width; x++)
+                        {
+                        if (token.IsCancellationRequested)
+                        {
+                            break;
+                        }
+                            counter++;
+                            var color = photo.GetPixel(x, y);
+                            int newRed = Math.Max(0, Math.Min(color.R - amount, 255));
+                            int newGreen = Math.Max(0, Math.Min(color.G - amount, 255));
+                            int newBlue = Math.Max(0, Math.Min(color.B - amount, 255));
+                            var newColor = System.Drawing.Color.FromArgb(newRed, newGreen, newBlue);
+                            photo.SetPixel(x, y, newColor);
+                            if (counter % onePercent == 0)
+                            {
+                                Invoke((Action)(() =>
+                                {
+                                    pf.IncrementProgress(10);
+                                }));
+                            }
+                        }
+                    }
+                    pictureBox1.Image = photo;
+
+
+                    // close progress form bar
+                    Invoke((Action)(() =>
+                    {
+                        pf.Close();
+                    }));
+                
             });
         }
     }
     }
 
-}
+

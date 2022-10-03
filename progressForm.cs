@@ -24,7 +24,10 @@ namespace photo_editor
 
         public void IncrementProgress(int i)
         {
-            progressBar1.Increment(i);
+            Invoke((Action)(() =>
+            {
+                progressBar1.Increment(i);
+            }));
         }
 
         private void Cancel_Click(object sender, EventArgs e)
