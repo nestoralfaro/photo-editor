@@ -1,39 +1,28 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using Microsoft.Win32;
-using photo_editor;
-using System.Drawing.Imaging;
 
 namespace photo_editor
 {
     public partial class MainForm : Form
     {
-        //public EditPhotoForm edit;
-        public String send;
+        public String imageOpened;
         public String location;
-        private string imageListDirectory;
         private string photoRootDirectory;
         private List<FileInfo> photoFiles;
         private List<ListViewItem> photoDetails;
         private ImageList thumbnails;
-        public string fileName;
+
         public MainForm()
         {
             InitializeComponent();
-            //progressBarMainForm.Visible = false;
 
             photoRootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
-            PopulateImageList();
             PopulateTreeView();
         }
 
@@ -83,7 +72,7 @@ namespace photo_editor
                         ++imageIndex;
                     }
                 }
-                catch (UnauthorizedAccessException blockedPath)
+                catch (UnauthorizedAccessException)
                 {
                     // ignore this path and move on
                 }
@@ -156,16 +145,13 @@ namespace photo_editor
                         currentNode.Nodes.Add(childDirectoryNode);
                         stack.Push(childDirectoryNode);
                     }
-                } catch (UnauthorizedAccessException blockedPath)
+                } catch (UnauthorizedAccessException)
                 {
                     // ignore this path and move on
                 }
             }
-
             treeViewMainForm.Nodes.Add(node);
         }
-
-   
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -180,11 +166,12 @@ namespace photo_editor
 
         private void listViewMain_ItemActivate(object sender, EventArgs e)
         {
-            String imageOpened = listViewMain.SelectedItems[0].Text;
+            imageOpened = listViewMain.SelectedItems[0].Text;
+            
             Console.WriteLine("current image selected?");
             Console.WriteLine(imageOpened);
             EditPhotoForm edit = new EditPhotoForm();
-           
+            
             edit.pic = photoRootDirectory + "\\" + imageOpened;
             edit.ShowDialog();
         }
@@ -215,7 +202,7 @@ namespace photo_editor
             progressBarMainForm.Visible = false;
 
         }
-
+       
         private void locateOnDiskToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (listViewMain.SelectedItems.Count == 0)

@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,6 +15,7 @@ namespace photo_editor
     {
         public string pic;
         public int count = 0;
+        private Bitmap photo;
         public ColorDialog colorDialog1 = new ColorDialog();
         public int progress = 0;
         private CancellationTokenSource cancellationTokenSource;
@@ -48,7 +48,7 @@ namespace photo_editor
         {
             // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
             // Author: Frank McCown
-            var photo = new Bitmap(pictureBox1.Image);
+            photo = new Bitmap(pictureBox1.Image);
             cancellationTokenSource = new CancellationTokenSource();
             var token = cancellationTokenSource.Token;
 
@@ -92,12 +92,9 @@ namespace photo_editor
                         }
                     }
                 });
-                
                 if (!token.IsCancellationRequested)pictureBox1.Image = photo;
-
                 progress.Close();
             }
-
         }
 
         private async void Invert_Click(object sender, EventArgs e)
@@ -107,7 +104,7 @@ namespace photo_editor
             // Author: Frank McCown
             progressForm progress = new progressForm();
             progress.CancelClicked += Progress_CancelClicked;
-            Bitmap photo = new Bitmap(pictureBox1.Image);
+            photo = new Bitmap(pictureBox1.Image);
             var count = 0;
             var token = cancellationTokenSource.Token;
 
@@ -142,12 +139,10 @@ namespace photo_editor
                     }
                 }
             }, token);
-
+           
             this.Enabled = true;            // Enable EditPhotoForm 
             progress.Hide();                // Hide progress bar form
             if (!token.IsCancellationRequested) pictureBox1.Image = photo;
-
-            
         }
 
         private async void brightnessTrackBar_MouseUp(object sender, MouseEventArgs e)
@@ -156,29 +151,21 @@ namespace photo_editor
             progressForm pf = new progressForm();
             // register listener for when the cancel button in progressForm was Clicked and execute Pf_CancelThread callback
             pf.CancelClicked += Progress_CancelClicked;
-            var photo = new Bitmap(pictureBox1.Image);
+            photo = new Bitmap(pictureBox1.Image);
             var token = cancellationTokenSource.Token;
             int onePercent = (photo.Height * photo.Width) / 100;
             int counter = 0;
             // Start asynchronous task
-            pf.Show();
 
             await Task.Run(() =>
             {
-
                 isOperationBrightness = true;
                 // show progress form bar
-
-
-                // change image brightness (call ChangeBrightness()?)
-
-
-
-
                 Invoke((Action)(() =>
                 {
+                    pf.Show();
+                    this.Enabled = false;
                     brightness = brightnessTrackBar.Value;
-
                 }));
 
                     int amount = Convert.ToInt32(2 * (50 - brightness) * 0.01 * 255);
@@ -213,11 +200,37 @@ namespace photo_editor
                     Invoke((Action)(() =>
                     {
                         pf.Close();
+                        this.Enabled = true;
                     }));
                 
             });
         }
+
+        private void Save_Click(object sender, EventArgs e)
+        {
+            photo.Save("C:\\Users\\redea\\Pictures\\pic3.jpg", ImageFormat.Jpeg);
+        }
+
+        private void SaveAs_Click(object sender, EventArgs e)
+        {
+            SaveAs.Image = photo;
+            SaveFileDialog Save = new SaveFileDialog();
+            Save.Filter = "Jpeg Image|*.jpg";
+            Save.Title = "Save As...";
+            Save.ShowDialog();
+
+            if(Save.FileName != ""){
+                System.IO.FileStream fs = (System.IO.FileStream)Save.OpenFile();
+
+                if(Save.FilterIndex == 1)
+                {
+                    this.SaveAs.Image.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    SaveAs.Image = null;
+                }
+                fs.Close();
+            }
     }
-    }
+}
+}
 
 
