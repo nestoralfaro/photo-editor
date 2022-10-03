@@ -67,11 +67,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 217);
+            this.ControlBox = false;
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label1);
             this.Name = "progressForm";
-            this.Text = "progressForm";
+            this.Text = "Transforming";
             this.ResumeLayout(false);
             this.PerformLayout();
 

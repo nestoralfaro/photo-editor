@@ -32,13 +32,13 @@
             this.Cancel = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Invert = new System.Windows.Forms.Button();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.brightnessTrackBar = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.Color = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // Save
@@ -89,15 +89,16 @@
             this.Invert.UseVisualStyleBackColor = true;
             this.Invert.Click += new System.EventHandler(this.Invert_Click);
             // 
-            // trackBar1
+            // brightnessTrackBar
             // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trackBar1.Location = new System.Drawing.Point(55, 417);
-            this.trackBar1.Maximum = 100;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(104, 45);
-            this.trackBar1.TabIndex = 4;
-            this.trackBar1.Value = 50;
+            this.brightnessTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.brightnessTrackBar.Location = new System.Drawing.Point(55, 417);
+            this.brightnessTrackBar.Maximum = 100;
+            this.brightnessTrackBar.Name = "brightnessTrackBar";
+            this.brightnessTrackBar.Size = new System.Drawing.Size(104, 45);
+            this.brightnessTrackBar.TabIndex = 4;
+            this.brightnessTrackBar.Value = 50;
+            this.brightnessTrackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.brightnessTrackBar_MouseUp);
             // 
             // label1
             // 
@@ -150,7 +151,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.trackBar1);
+            this.Controls.Add(this.brightnessTrackBar);
             this.Controls.Add(this.Invert);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Cancel);
@@ -159,7 +160,7 @@
             this.Text = "EditPhotoForm";
             this.Load += new System.EventHandler(this.EditPhotoForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,7 +172,7 @@
         private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button Invert;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar brightnessTrackBar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
