@@ -23,6 +23,8 @@ namespace photo_editor
         private CancellationTokenSource cancellationTokenSource;
         private bool isOperationBrightness;
         private int brightness;
+        private int brightness2;
+
         String filePath;
         public EditPhotoForm(String photoName)
         {
@@ -36,7 +38,8 @@ namespace photo_editor
             cancellationTokenSource.Cancel();
             if (isOperationBrightness)
             {
-                brightnessTrackBar.Value = 50;
+                brightnessTrackBar.Value = brightness2;
+                
             }
         }
 
@@ -180,6 +183,7 @@ namespace photo_editor
                 {
                     this.Enabled = false;
                     brightness = brightnessTrackBar.Value;
+                    
                 }));
 
                     int amount = Convert.ToInt32(2 * (50 - brightness) * 0.01 * 255);
@@ -212,6 +216,7 @@ namespace photo_editor
                     Invoke((Action)(() =>
                     {
                         this.Enabled = true;
+
                     }));
                 
             });
@@ -220,6 +225,7 @@ namespace photo_editor
             {
                 pictureBox1.Image = photo;
                 Save.Enabled = true;
+                brightness2 = brightness;
             }
             pf.Close();
 
@@ -230,7 +236,7 @@ namespace photo_editor
             // if changes have been made
             if (photo != null)
             {
-                photo.Save(filePath, ImageFormat.Jpeg); //Throws exception only when file 
+                photo.Save(filePath, ImageFormat.Jpeg); 
             }
         }
 
