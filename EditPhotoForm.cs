@@ -109,7 +109,7 @@ namespace photo_editor
             // Author: Frank McCown
             progressForm progress = new progressForm();
             progress.CancelClicked += Progress_CancelClicked;
-            photo = new Bitmap("C:\\Users\\redea\\Pictures\\pic3.jpg");
+            photo = new Bitmap(pictureBox1.Image);
             var count = 0;
             var token = cancellationTokenSource.Token;
 
