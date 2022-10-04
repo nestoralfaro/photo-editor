@@ -48,7 +48,7 @@ namespace photo_editor
             byte[] bytes = System.IO.File.ReadAllBytes(pic);
             MemoryStream ms = new MemoryStream(bytes);
             pictureBox1.Image = Image.FromStream(ms);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            // pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
         private async void Color_Click(object sender, EventArgs e)
         {
