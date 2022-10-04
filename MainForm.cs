@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
@@ -20,9 +21,7 @@ namespace photo_editor
         public MainForm()
         {
             InitializeComponent();
-
             photoRootDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-
             PopulateTreeView();
         }
 
@@ -67,6 +66,7 @@ namespace photo_editor
                         catch
                         {
                             Console.WriteLine("This is not an image file");
+                            //ignore and move on
                         }
 
                         //photoFiles.Add(file);
@@ -169,14 +169,9 @@ namespace photo_editor
         private void listViewMain_ItemActivate(object sender, EventArgs e)
         {
             imageOpened = listViewMain.SelectedItems[0].Text;
-            
-            Console.WriteLine("current image selected?");
-            Console.WriteLine(imageOpened);
             EditPhotoForm edit = new EditPhotoForm(photoRootDirectory + "\\" + imageOpened);
-
             edit.pic = photoRootDirectory + "\\" + imageOpened;
             edit.ShowDialog();
-            
         }
 
         private async void treeViewMainForm_AfterSelect(object sender, TreeViewEventArgs e)

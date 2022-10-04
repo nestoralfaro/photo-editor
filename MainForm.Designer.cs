@@ -270,6 +270,7 @@ namespace photo_editor
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStripMainForm);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripMainForm;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(10);

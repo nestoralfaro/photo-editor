@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditPhotoForm));
             this.Save = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -38,6 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.Color = new System.Windows.Forms.Button();
             this.SaveAs = new System.Windows.Forms.Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.brightnessTrackBar)).BeginInit();
             this.SuspendLayout();
@@ -46,6 +49,7 @@
             // 
             this.Save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Save.Enabled = false;
             this.Save.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Save.Location = new System.Drawing.Point(428, 544);
             this.Save.Name = "Save";
@@ -155,6 +159,12 @@
             this.SaveAs.UseVisualStyleBackColor = true;
             this.SaveAs.Click += new System.EventHandler(this.SaveAs_Click);
             // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
             // EditPhotoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -170,6 +180,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.Save);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EditPhotoForm";
             this.Text = "EditPhotoForm";
             this.Load += new System.EventHandler(this.EditPhotoForm_Load);
@@ -192,5 +203,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button Color;
         private System.Windows.Forms.Button SaveAs;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }

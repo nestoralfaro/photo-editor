@@ -42,11 +42,10 @@ namespace photo_editor
 
         private void EditPhotoForm_Load(object sender, EventArgs e)
         {
-            Console.WriteLine("pic edit photo form");
-            Console.WriteLine(pic);
-            pictureBox1.Image = Image.FromFile(pic);
+            byte[] bytes = System.IO.File.ReadAllBytes(pic);
+            MemoryStream ms = new MemoryStream(bytes);
+            pictureBox1.Image = Image.FromStream(ms);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-
         }
         private async void Color_Click(object sender, EventArgs e)
         {
@@ -60,7 +59,6 @@ namespace photo_editor
             int percent = 0;
             progressForm progress = new progressForm();
             progress.CancelClicked += Progress_CancelClicked;
-            Console.WriteLine(Total);
             
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -97,7 +95,11 @@ namespace photo_editor
                         }
                     }
                 });
-                if (!token.IsCancellationRequested)pictureBox1.Image = photo;
+                if (!token.IsCancellationRequested)
+                {
+                    pictureBox1.Image = photo;
+                    Save.Enabled = true;
+                }
                 progress.Close();
             }
         }
@@ -110,6 +112,7 @@ namespace photo_editor
             progressForm progress = new progressForm();
             progress.CancelClicked += Progress_CancelClicked;
             photo = new Bitmap(pictureBox1.Image);
+
             var count = 0;
             var token = cancellationTokenSource.Token;
 
@@ -146,7 +149,11 @@ namespace photo_editor
             }, token);
             this.Enabled = true;            // Enable EditPhotoForm 
             progress.Hide();                // Hide progress bar form
-           if (!token.IsCancellationRequested) pictureBox1.Image = photo;
+            if (!token.IsCancellationRequested)
+            {
+                pictureBox1.Image = photo;
+                Save.Enabled = true;
+            }
         }
 
         private async void brightnessTrackBar_MouseUp(object sender, MouseEventArgs e)
@@ -200,8 +207,6 @@ namespace photo_editor
                             }
                         }
                     }
-                    if(!token.IsCancellationRequested) pictureBox1.Image = photo;
-
 
                     // close progress form bar
                     Invoke((Action)(() =>
@@ -210,13 +215,23 @@ namespace photo_editor
                     }));
                 
             });
+
+            if (!token.IsCancellationRequested)
+            {
+                pictureBox1.Image = photo;
+                Save.Enabled = true;
+            }
             pf.Close();
 
         }
 
         private void Save_Click(object sender, EventArgs e)
         {
-            photo.Save(filePath, ImageFormat.Jpeg); //Throws exception only when file 
+            // if changes have been made
+            if (photo != null)
+            {
+                photo.Save(filePath, ImageFormat.Jpeg); //Throws exception only when file 
+            }
         }
 
         private void SaveAs_Click(object sender, EventArgs e)   // Allows user to specify file name
@@ -240,5 +255,3 @@ namespace photo_editor
     }
 }
 }
-
-

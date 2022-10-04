@@ -18,8 +18,8 @@ namespace photo_editor
             this.labelProductName.Text = AssemblyProduct;
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.aboutTextBoxDescription.Text = AssemblyDescription;
+            this.labelCompanyName.Text = "By Rede and Nestor";
+            this.aboutTextBoxDescription.Text = "Description: Application that displays, and edits pictures form a given directory. This application was built in C# with Windows Forms.";
         }
 
         #region Assembly Attribute Accessors
