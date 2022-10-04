@@ -8,6 +8,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace photo_editor
 {
@@ -21,8 +23,10 @@ namespace photo_editor
         private CancellationTokenSource cancellationTokenSource;
         private bool isOperationBrightness;
         private int brightness;
-        public EditPhotoForm()
+        String filePath;
+        public EditPhotoForm(String photoName)
         {
+            filePath = photoName;
             InitializeComponent();
         }
 
@@ -57,6 +61,7 @@ namespace photo_editor
             progressForm progress = new progressForm();
             progress.CancelClicked += Progress_CancelClicked;
             Console.WriteLine(Total);
+            
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 isOperationBrightness = false;
@@ -86,7 +91,7 @@ namespace photo_editor
                             {
                                 Invoke((Action)(() =>
                                 {
-                                    progress.IncrementProgress(10);
+                                    progress.IncrementProgress(1);
                                 }));
                             }
                         }
@@ -104,7 +109,7 @@ namespace photo_editor
             // Author: Frank McCown
             progressForm progress = new progressForm();
             progress.CancelClicked += Progress_CancelClicked;
-            photo = new Bitmap(pictureBox1.Image);
+            photo = new Bitmap("C:\\Users\\redea\\Pictures\\pic3.jpg");
             var count = 0;
             var token = cancellationTokenSource.Token;
 
@@ -133,20 +138,20 @@ namespace photo_editor
                         {
                             Invoke((Action)(() =>
                             {
-                                progress.IncrementProgress(10);
+                                progress.IncrementProgress(1);
                             }));
                         }
                     }
                 }
             }, token);
-           
             this.Enabled = true;            // Enable EditPhotoForm 
             progress.Hide();                // Hide progress bar form
-            if (!token.IsCancellationRequested) pictureBox1.Image = photo;
+           if (!token.IsCancellationRequested) pictureBox1.Image = photo;
         }
 
         private async void brightnessTrackBar_MouseUp(object sender, MouseEventArgs e)
         {
+
             cancellationTokenSource = new CancellationTokenSource();
             progressForm pf = new progressForm();
             // register listener for when the cancel button in progressForm was Clicked and execute Pf_CancelThread callback
@@ -159,6 +164,8 @@ namespace photo_editor
 
             await Task.Run(() =>
             {
+                // Citation: Code below from https://github.com/fmccown/SimplePhotoEditor
+                // Author: Frank McCown
                 isOperationBrightness = true;
                 // show progress form bar
                 Invoke((Action)(() =>
@@ -188,7 +195,7 @@ namespace photo_editor
                             {
                                 Invoke((Action)(() =>
                                 {
-                                    pf.IncrementProgress(10);
+                                    pf.IncrementProgress(1);
                                 }));
                             }
                         }
@@ -208,14 +215,14 @@ namespace photo_editor
 
         private void Save_Click(object sender, EventArgs e)
         {
-            photo.Save("C:\\Users\\redea\\Pictures\\pic3.jpg", ImageFormat.Jpeg);
+            photo.Save(filePath, ImageFormat.Jpeg); //Throws exception only when file 
         }
 
-        private void SaveAs_Click(object sender, EventArgs e)
+        private void SaveAs_Click(object sender, EventArgs e)   // Allows user to specify file name
         {
             SaveAs.Image = photo;
             SaveFileDialog Save = new SaveFileDialog();
-            Save.Filter = "Jpeg Image|*.jpg";
+            Save.Filter = "Jpeg Image|*.jpg";   // Specifies types of files user is allowed to choose
             Save.Title = "Save As...";
             Save.ShowDialog();
 

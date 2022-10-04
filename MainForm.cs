@@ -62,6 +62,7 @@ namespace photo_editor
                             thumbnails.Images.Add(img);
                             photoDetails.Add(photoRow);
                             photoFiles.Add(file);
+                            
                         }
                         catch
                         {
@@ -170,10 +171,11 @@ namespace photo_editor
             
             Console.WriteLine("current image selected?");
             Console.WriteLine(imageOpened);
-            EditPhotoForm edit = new EditPhotoForm();
-            
+            EditPhotoForm edit = new EditPhotoForm(photoRootDirectory + "\\" + imageOpened);
+
             edit.pic = photoRootDirectory + "\\" + imageOpened;
             edit.ShowDialog();
+            
         }
 
         private async void treeViewMainForm_AfterSelect(object sender, TreeViewEventArgs e)
