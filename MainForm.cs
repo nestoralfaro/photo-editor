@@ -88,6 +88,7 @@ namespace photo_editor
                     listViewMain.Columns.Add("Name", 240, HorizontalAlignment.Left);
                     listViewMain.Columns.Add("Date", 160, HorizontalAlignment.Left);
                     listViewMain.Columns.Add("Size", 80, HorizontalAlignment.Right);
+                    listViewMain.FullRowSelect = true;
 
                     // Add the items to the list view
                     listViewMain.Items.AddRange(photoDetails.ToArray());

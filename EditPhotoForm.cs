@@ -161,6 +161,7 @@ namespace photo_editor
             int onePercent = (photo.Height * photo.Width) / 100;
             int counter = 0;
             // Start asynchronous task
+            pf.Show();
 
             await Task.Run(() =>
             {
@@ -170,7 +171,6 @@ namespace photo_editor
                 // show progress form bar
                 Invoke((Action)(() =>
                 {
-                    pf.Show();
                     this.Enabled = false;
                     brightness = brightnessTrackBar.Value;
                 }));
@@ -200,17 +200,18 @@ namespace photo_editor
                             }
                         }
                     }
-                    pictureBox1.Image = photo;
+                    if(!token.IsCancellationRequested) pictureBox1.Image = photo;
 
 
                     // close progress form bar
                     Invoke((Action)(() =>
                     {
-                        pf.Close();
                         this.Enabled = true;
                     }));
                 
             });
+            pf.Close();
+
         }
 
         private void Save_Click(object sender, EventArgs e)

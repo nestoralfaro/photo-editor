@@ -29,6 +29,8 @@ namespace photo_editor
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStripMainForm = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.locateOnDiskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +54,7 @@ namespace photo_editor
             this.panel2 = new System.Windows.Forms.Panel();
             this.listViewMain = new System.Windows.Forms.ListView();
             this.progressBarMainForm = new System.Windows.Forms.ProgressBar();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.menuStripMainForm.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -156,21 +159,21 @@ namespace photo_editor
             this.detailsToolStripMenuItem.Checked = true;
             this.detailsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
-            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.detailsToolStripMenuItem.Text = "Details";
             this.detailsToolStripMenuItem.Click += new System.EventHandler(this.onToolStripMenuItemChange);
             // 
             // smallToolStripMenuItem
             // 
             this.smallToolStripMenuItem.Name = "smallToolStripMenuItem";
-            this.smallToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.smallToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.smallToolStripMenuItem.Text = "Small";
             this.smallToolStripMenuItem.Click += new System.EventHandler(this.onToolStripMenuItemChange);
             // 
             // largeToolStripMenuItem
             // 
             this.largeToolStripMenuItem.Name = "largeToolStripMenuItem";
-            this.largeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.largeToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.largeToolStripMenuItem.Text = "Large";
             this.largeToolStripMenuItem.Click += new System.EventHandler(this.onToolStripMenuItemChange);
             // 
@@ -185,7 +188,7 @@ namespace photo_editor
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -202,8 +205,11 @@ namespace photo_editor
             // treeViewMainForm
             // 
             this.treeViewMainForm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewMainForm.ImageIndex = 0;
+            this.treeViewMainForm.ImageList = this.imageList1;
             this.treeViewMainForm.Location = new System.Drawing.Point(0, 0);
             this.treeViewMainForm.Name = "treeViewMainForm";
+            this.treeViewMainForm.SelectedImageIndex = 0;
             this.treeViewMainForm.Size = new System.Drawing.Size(200, 406);
             this.treeViewMainForm.TabIndex = 0;
             this.treeViewMainForm.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewMainForm_AfterSelect);
@@ -247,6 +253,12 @@ namespace photo_editor
             this.progressBarMainForm.TabIndex = 1;
             this.progressBarMainForm.Value = 50;
             this.progressBarMainForm.Visible = false;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "folder-icon.png");
             // 
             // MainForm
             // 
@@ -296,6 +308,7 @@ namespace photo_editor
         private System.Windows.Forms.TreeView treeViewMainForm;
         private System.Windows.Forms.ListView listViewMain;
         private System.Windows.Forms.ProgressBar progressBarMainForm;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
 
